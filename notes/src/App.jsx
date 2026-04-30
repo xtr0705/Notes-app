@@ -123,10 +123,8 @@ const DisplayNotes = ({setNotes,notes,setEditingId,setNoteTitle,setNoteContent})
       onClick={()=>{
         const clickedId=note.id;
         setNotes(
-          notes.filter(note=>{
-            clickedId!==note.id;
-          })
-        )
+          notes.filter(note=>clickedId!==note.id)
+        );
       }}
       >
         Delete
