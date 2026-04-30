@@ -62,8 +62,9 @@ function InputNote({setEditingId,editingId,setNotes, notes, setNoteTitle,noteTit
           setEditingId("");
           setNoteTitle("");
           setNoteContent("");
-        }} 
-      />
+        }}>
+          {editingId?"Change":"Add"}
+      </button>
 
     </div>
   )
@@ -115,6 +116,20 @@ const DisplayNotes = ({setNotes,notes,setEditingId,setNoteTitle,setNoteContent})
           
       >
         Done
+      </button>
+
+      <button
+      className='bg-red-800 text-white rounded-lg'
+      onClick={()=>{
+        const clickedId=note.id;
+        setNotes(
+          notes.filter(note=>{
+            clickedId!==note.id;
+          })
+        )
+      }}
+      >
+        Delete
       </button>
       </div> 
     )
