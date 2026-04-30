@@ -1,6 +1,6 @@
 import './App.css'
 import dayjs from 'dayjs';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 
 
@@ -135,9 +135,10 @@ const DisplayNotes = ({setNotes,notes,setEditingId,setNoteTitle,setNoteContent})
 }
 
 function App() {
-
   
-  const MyNotes = [{
+  const notesData = JSON.parse(localStorage.getItem('MyNotes'));
+  
+  const MyNotes = notesData || [{
     noteTitle: "First note",
     noteContent: "This is my first note",
     // eslint-disable-next-line react-hooks/purity
@@ -151,13 +152,21 @@ function App() {
     id: crypto.randomUUID(),
     date: dayjs().format('DD MMMM, YYYY'),
     completed:false
-  }];
+  }]
   
-  const [notes, setNotes] = useState(MyNotes);
+  
+  
+  
+  
+  const [notes, setNotes] = useState(notesData||MyNotes);
   const [noteTitle, setNoteTitle] = useState("");
   const [noteContent, setNoteContent] = useState("");
   const [editingId, setEditingId]=useState("");
-
+  
+  useEffect(()=>{
+    localStorage.setItem('MyNotes',JSON.stringify(notes))
+  },[notes]);
+  
   return (
     <>
       <div className="w-full min-h-screen flex items-start bg-black gap-4" >
