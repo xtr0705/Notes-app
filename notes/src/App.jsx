@@ -75,7 +75,7 @@ const DisplayNotes = ({setNotes,notes,setEditingId,setNoteTitle,setNoteContent})
   return notes.map((note) => {
     return (
       <div 
-      className={note.completed?"line-through text-3xl":"w-60 h-70 flex flex-col justify-center items-center bg-mauve-600 rounded-2xl"} 
+      className={note.completed?"w-60 h-70 flex flex-col justify-center items-center bg-mauve-600 rounded-2xl line-through text-3xl":"w-60 h-70 flex flex-col justify-center items-center bg-mauve-600 rounded-2xl"} 
       key={note.id}
       >
         <h3
