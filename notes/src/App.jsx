@@ -1,22 +1,23 @@
 import './App.css'
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
+import { Pencil, Trash2, Check } from "lucide-react";
 
 
 
 
 
-function InputNote({setEditingId,editingId,setNotes, notes, setNoteTitle,noteTitle, setNoteContent, noteContent}) {
-  
+function InputNote({ setEditingId, editingId, setNotes, notes, setNoteTitle, noteTitle, setNoteContent, noteContent }) {
+
   return (
-    <div className={"w-60 h-70 flex flex-col justify-center items-center bg-mauve-600 rounded-2xl "} >
-      <input 
-        type="text" 
-        placeholder="Title" 
+    <div className={"relative w-60 h-70 mt-3 flex flex-col justify-between p-4 bg-[#111111] text-gray-100 border border-[#2a2a2a] rounded-xl "} >
+      <input
+        type="text"
+        placeholder="Title"
         value={noteTitle}
         onChange={(e) => {
           setNoteTitle(e.target.value);
-        }} 
+        }}
       />
 
       <input
@@ -26,33 +27,33 @@ function InputNote({setEditingId,editingId,setNotes, notes, setNoteTitle,noteTit
         placeholder="Note"
         onChange={(e) => {
           setNoteContent(e.target.value);
-        }} 
+        }}
       />
       <button
         className="w-20 h-10 bg-green-500 rounded-2xl text-white font-bold"
-        onClick={()=>{
+        onClick={() => {
           if (editingId) {
             setNotes(
-              notes.map((note)=>
-                note.id === editingId 
-                  ?{
+              notes.map((note) =>
+                note.id === editingId
+                  ? {
                     ...note,
-                    noteTitle:noteTitle,
-                    noteContent:noteContent,
+                    noteTitle: noteTitle,
+                    noteContent: noteContent,
                     date: dayjs().format('DD MMMM, YYYY'),
-                    completed:false,
+                    completed: false,
                   }
                   : note
               )
             );
-            
-          }else{
-            const newNote={
+
+          } else {
+            const newNote = {
               noteTitle,
               noteContent,
               id: crypto.randomUUID(),
               date: dayjs().format('DD MMMM, YYYY'),
-              completed:false
+              completed: false
             }
             console.log(newNote);
             setNotes([...notes, newNote]);
@@ -63,7 +64,7 @@ function InputNote({setEditingId,editingId,setNotes, notes, setNoteTitle,noteTit
           setNoteTitle("");
           setNoteContent("");
         }}>
-          {editingId?"Change":"Add"}
+        {editingId ? "Change" : "Add"}
       </button>
 
     </div>
@@ -71,102 +72,111 @@ function InputNote({setEditingId,editingId,setNotes, notes, setNoteTitle,noteTit
 }
 
 
-const DisplayNotes = ({setNotes,notes,setEditingId,setNoteTitle,setNoteContent}) => {
+const DisplayNotes = ({ setNotes, notes, setEditingId, setNoteTitle, setNoteContent }) => {
   return notes.map((note) => {
     return (
-      <div 
-      className={note.completed?"line-through text-3xl":"w-60 h-70 flex flex-col justify-center items-center bg-mauve-600 rounded-2xl"} 
-      key={note.id}
+      <div
+        className="relative w-60 h-70 mt-3 flex flex-col justify-between p-4 bg-[#111111] text-gray-100 border border-[#2a2a2a] rounded-xl"
+        key={note.id}
       >
         <h3
-          className='font-bold text-3xl'
+          className={note.completed ? " line-through text-3xl" : "font-semibold text-3xl"}
         >{note.noteTitle}</h3>
         <p
-          className='font-semibold text-lg'
+          className={note.completed ? " line-through text-3xl" : "font-normal text-lg text-gray-200"}
         >{note.noteContent}</p>
-        <p className='font-light text-md'
+        <p className={note.completed ? " line-through" : "font-light text-md text-gray-500"}
         >{note.date}</p>
-        <button 
-        className='bg-white font-bold rounded-lg p-2 mt-3'
-        onClick={
-         ()=>{
-          setEditingId(note.id)
-          setNoteTitle(note.noteTitle)
-          setNoteContent(note.noteContent)
-        }}
-        >Edit</button>
 
-      <button 
-      className='bg-black text-amber-50 rounded-lg'
-      onClick={()=>{
-        const clickedId = note.id;
-        setNotes(
-          notes.map((note) => {
-            if (clickedId === note.id) {
-              console.log("Match found> updating status",note.id);
-              return {
-                ...note,
-                completed: !note.completed
-              };
-            }
-            return note;
-          })
-        );
-      }}
-          
-      >
-        Done
-      </button>
+        <div className='absolute top-0.5 right-2 flex gap-2' >
+          <button
+            className=' bg-white text-black rounded-lg p-2 mt-1'
+            onClick={
+              () => {
+                setEditingId(note.id)
+                setNoteTitle(note.noteTitle)
+                setNoteContent(note.noteContent)
+              }}
+          >
+            <Pencil size={14} />
+          </button>
+        </div>
 
-      <button
-      className='bg-red-800 text-white rounded-lg'
-      onClick={()=>{
-        const clickedId=note.id;
-        setNotes(
-          notes.filter(note=>clickedId!==note.id)
-        );
-      }}
-      >
-        Delete
-      </button>
-      </div> 
+        <div className='absolute top-9.5 right-2 flex gap-2'>
+          <button
+            className='bg-green-500 text-black rounded-lg p-2 mt-1'
+            onClick={() => {
+              const clickedId = note.id;
+              setNotes(
+                notes.map((note) => {
+                  if (clickedId === note.id) {
+                    console.log("Match found> updating status", note.id);
+                    return {
+                      ...note,
+                      completed: !note.completed
+                    };
+                  }
+                  return note;
+                })
+              );
+            }}
+
+          >
+            <Check size={14} />
+          </button>
+        </div>
+
+        <div className='absolute top-18.5 right-2 flex gap-2' >
+          <button
+            className='bg-red-800 rounded-lg p-2 mt-1 text-black'
+            onClick={() => {
+              const clickedId = note.id;
+              setNotes(
+                notes.filter(note => clickedId !== note.id)
+              );
+            }}
+          >
+            <Trash2 size={14} />
+          </button>
+        </div>
+      </div>
     )
   })
 }
 
 function App() {
-  
+
   const notesData = JSON.parse(localStorage.getItem('MyNotes'));
-  
+
   const MyNotes = notesData || [{
     noteTitle: "First note",
     noteContent: "This is my first note",
     // eslint-disable-next-line react-hooks/purity
     id: crypto.randomUUID(),
     date: dayjs().format('DD MMMM, YYYY'),
-    completed:false
+    completed: false
   }, {
     noteTitle: "Second note",
     noteContent: "This is my second note",
     // eslint-disable-next-line react-hooks/purity
     id: crypto.randomUUID(),
     date: dayjs().format('DD MMMM, YYYY'),
-    completed:false
+    completed: false
   }]
-  
-  
-  
-  
-  
-  const [notes, setNotes] = useState(notesData||MyNotes);
+
+
+
+
+
+  const [notes, setNotes] = useState(notesData || MyNotes);
   const [noteTitle, setNoteTitle] = useState("");
   const [noteContent, setNoteContent] = useState("");
-  const [editingId, setEditingId]=useState("");
-  
-  useEffect(()=>{
-    localStorage.setItem('MyNotes',JSON.stringify(notes))
-  },[notes]);
-  
+  const [editingId, setEditingId] = useState("");
+
+  useEffect(() => {
+    localStorage.setItem('MyNotes', JSON.stringify(notes))
+  }, [notes]);
+
   return (
     <>
       <div className="w-full min-h-screen flex items-start bg-black gap-4" >
@@ -180,7 +190,7 @@ function App() {
           editingId={editingId}
           setEditingId={setEditingId}
         />
-        <DisplayNotes 
+        <DisplayNotes
           notes={notes}
           setEditingId={setEditingId}
           setNoteTitle={setNoteTitle}
