@@ -2,6 +2,7 @@ import './App.css'
 import dayjs from 'dayjs';
 import { useEffect, useRef, useState } from 'react';
 import { Pencil, Trash2, Check } from "lucide-react";
+import { motion } from "framer-motion";
 
 
 
@@ -102,7 +103,10 @@ function InputNote({ setEditingId, editingId, setNotes, notes, setNoteTitle, not
 const DisplayNotes = ({ setNotes, notes, setEditingId, setNoteTitle, setNoteContent }) => {
   return notes.map((note) => {
     return (
-      <div
+      <motion.div
+        initial={{ opacity: 0, y: 20, scale: 0.95 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.3 }}
         className="relative w-70 min-h-[200px] mt-3 flex flex-col justify-between p-4 bg-[#111111] text-gray-100 border border-[#2a2a2a] rounded-xl
         
         transition-all duration-300 hover:-translate-y-1 hover:scale-[1.01] hover:shadow-xl hover:border-[#3a3a3a]
@@ -110,7 +114,7 @@ const DisplayNotes = ({ setNotes, notes, setEditingId, setNoteTitle, setNoteCont
         key={note.id}
       >
         <h3
-          className={note.completed ? "break-words line-through text-xl text-gray-500 pr-9" : "font-semibold text-xl break-words pr-9"}
+          className={note.completed ? "break-words tracking-tight line-through text-xl text-gray-500 pr-9" : "tracking-tight font-semibold text-xl break-words pr-9"}
         >{note.noteTitle}</h3>
         <p
           className={note.completed ? "break-words line-through text-lg text-gray-500 pt-6 pr-9" : "font-normal text-lg text-gray-200 pt-6 pr-9 break-words"}
@@ -118,7 +122,7 @@ const DisplayNotes = ({ setNotes, notes, setEditingId, setNoteTitle, setNoteCont
         <p className={note.completed ? " line-through text-gray-500 pt-6" : "font-light pt-6 text-md text-gray-500"}
         >{note.date}</p>
 
-        <div className='absolute top-0.5 right-2 flex gap-2' >
+        <div className='absolute top-3.0 right-2 flex gap-2' >
           <button
             className='rounded-lg p-2 mt-1 text-black
 
@@ -141,7 +145,7 @@ const DisplayNotes = ({ setNotes, notes, setEditingId, setNoteTitle, setNoteCont
           </button>
         </div>
 
-        <div className='absolute top-9.5 right-2 flex gap-2'>
+        <div className='absolute top-13.5 right-2 flex gap-2'>
           <button
             className='rounded-lg p-2 mt-1 text-black
 
@@ -175,7 +179,7 @@ const DisplayNotes = ({ setNotes, notes, setEditingId, setNoteTitle, setNoteCont
           </button>
         </div>
 
-        <div className='absolute top-18.5 right-2 flex gap-2 ' >
+        <div className='absolute top-23 right-2 flex gap-2 ' >
           <button
             className='rounded-lg p-2 mt-1 text-black
 
@@ -197,7 +201,7 @@ const DisplayNotes = ({ setNotes, notes, setEditingId, setNoteTitle, setNoteCont
             <Trash2 size={14} />
           </button>
         </div>
-      </div>
+      </motion.div>
     )
   })
 }
