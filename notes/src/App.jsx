@@ -49,44 +49,51 @@ function InputNote({ setEditingId, editingId, setNotes, notes, setNoteTitle, not
         className='w-full text-xl min-h-[100px] resize-none overflow-hidden outline-none'
       />
 
-      <button
-        className="w-20 h-10 bg-green-500 rounded-xl text-white font-bold"
-        onClick={() => {
-          if (editingId) {
-            setNotes(
-              notes.map((note) =>
-                note.id === editingId
-                  ? {
-                    ...note,
-                    noteTitle: noteTitle,
-                    noteContent: noteContent,
-                    date: dayjs().format('DD MMMM, YYYY'),
-                    completed: false,
-                  }
-                  : note
-              )
-            );
+      <div className='flex justify-center'>
+        <button
+          className="w-20 h-10 bg-green-500 rounded-xl text-black font-semi-bold 
+          
+          md:bg-black md:text-white md:hover:transition-all md:hover:ring-3 md:hover:ring-green-500 md:border md:border-[#2a2a2a] md:shadow-none
+          md:hover:shadow-[0_0_10px_rgba(34,197,94,0.6)]
 
-          } else {
-            const newNote = {
-              noteTitle,
-              noteContent,
-              id: crypto.randomUUID(),
-              date: dayjs().format('DD MMMM, YYYY'),
-              completed: false
+            transition-all duration-300
+          "
+          onClick={() => {
+            if (editingId) {
+              setNotes(
+                notes.map((note) =>
+                  note.id === editingId
+                    ? {
+                      ...note,
+                      noteTitle: noteTitle,
+                      noteContent: noteContent,
+                      date: dayjs().format('DD MMMM, YYYY'),
+                      completed: false,
+                    }
+                    : note
+                )
+              );
+
+            } else {
+              const newNote = {
+                noteTitle,
+                noteContent,
+                id: crypto.randomUUID(),
+                date: dayjs().format('DD MMMM, YYYY'),
+                completed: false
+              }
+              console.log(newNote);
+              setNotes([...notes, newNote]);
+              console.log(notes);
             }
-            console.log(newNote);
-            setNotes([...notes, newNote]);
-            console.log(notes);
-          }
 
-          setEditingId("");
-          setNoteTitle("");
-          setNoteContent("");
-        }}>
-        {editingId ? "Change" : "Add"}
-      </button>
-
+            setEditingId("");
+            setNoteTitle("");
+            setNoteContent("");
+          }}>
+          {editingId ? "Change" : "Add"}
+        </button>
+      </div>
     </div>
   )
 }
