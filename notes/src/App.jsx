@@ -1,6 +1,6 @@
 import './App.css'
 import dayjs from 'dayjs';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Pencil, Trash2, Check } from "lucide-react";
 
 
@@ -9,9 +9,18 @@ import { Pencil, Trash2, Check } from "lucide-react";
 
 function InputNote({ setEditingId, editingId, setNotes, notes, setNoteTitle, noteTitle, setNoteContent, noteContent }) {
 
+  const textareaRef = useRef(null);
+
+  useEffect(()=>{
+    const element = textareaRef.current;
+    element.style.height = "auto";
+    element.style.height = element.scrollHeight + "px";
+  },[noteContent]);
+
   return (
-    <div className={"relative w-60 h-70 mt-3 flex flex-col justify-between p-4 bg-[#111111] text-gray-100 border border-[#2a2a2a] rounded-xl "} >
+    <div className={"relative w-65 h-80 mt-3 flex flex-col justify-between p-4 bg-[#111111] text-gray-100 border border-[#2a2a2a] rounded-xl "} >
       <input
+      className='bg-white '
         type="text"
         placeholder="Title"
         value={noteTitle}
@@ -20,17 +29,28 @@ function InputNote({ setEditingId, editingId, setNotes, notes, setNoteTitle, not
         }}
       />
 
-      <input
-        className="h-10 w-30 rounded-2xl"
+      {/* <input
+        className="bg-white text-black h-50"
         type="text"
         value={noteContent}
         placeholder="Note"
         onChange={(e) => {
           setNoteContent(e.target.value);
         }}
+      /> */}
+
+      <textarea
+        ref={textareaRef}
+        value={noteContent}
+        onChange={(e)=>{
+          setNoteContent(e.target.value);
+        }}
+        placeholder='Write your note..'
+        className='w-full min-h-[100px] resize-none overflow-hidden outline-none'
       />
+
       <button
-        className="w-20 h-10 bg-green-500 rounded-2xl text-white font-bold"
+        className="w-20 h-10 bg-green-500 rounded-xl text-white font-bold"
         onClick={() => {
           if (editingId) {
             setNotes(
@@ -113,6 +133,7 @@ const DisplayNotes = ({ setNotes, notes, setEditingId, setNoteTitle, setNoteCont
                     console.log("Match found> updating status", note.id);
                     return {
                       ...note,
+                      date: dayjs().format('DD MMMM, YYYY'),
                       completed: !note.completed
                     };
                   }
@@ -151,14 +172,12 @@ function App() {
   const MyNotes = notesData || [{
     noteTitle: "First note",
     noteContent: "This is my first note",
-    // eslint-disable-next-line react-hooks/purity
     id: crypto.randomUUID(),
     date: dayjs().format('DD MMMM, YYYY'),
     completed: false
   }, {
     noteTitle: "Second note",
     noteContent: "This is my second note",
-    // eslint-disable-next-line react-hooks/purity
     id: crypto.randomUUID(),
     date: dayjs().format('DD MMMM, YYYY'),
     completed: false
