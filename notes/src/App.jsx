@@ -20,7 +20,7 @@ function InputNote({ setEditingId, editingId, setNotes, notes, setNoteTitle, not
   return (
     <div className={"relative w-65 h-80 mt-3 flex flex-col justify-between p-4 bg-[#111111] text-gray-100 border border-[#2a2a2a] rounded-xl "} >
       <input
-      className='bg-white '
+      className='outline-none text-3xl '
         type="text"
         placeholder="Title"
         value={noteTitle}
@@ -46,7 +46,7 @@ function InputNote({ setEditingId, editingId, setNotes, notes, setNoteTitle, not
           setNoteContent(e.target.value);
         }}
         placeholder='Write your note..'
-        className='w-full min-h-[100px] resize-none overflow-hidden outline-none'
+        className='w-full text-xl min-h-[100px] resize-none overflow-hidden outline-none'
       />
 
       <button
@@ -96,21 +96,33 @@ const DisplayNotes = ({ setNotes, notes, setEditingId, setNoteTitle, setNoteCont
   return notes.map((note) => {
     return (
       <div
-        className="relative w-60 h-70 mt-3 flex flex-col justify-between p-4 bg-[#111111] text-gray-100 border border-[#2a2a2a] rounded-xl"
+        className="relative w-70 min-h-[200px] mt-3 flex flex-col justify-between p-4 bg-[#111111] text-gray-100 border border-[#2a2a2a] rounded-xl
+        
+        transition-all duration-300 hover:-translate-y-1 hover:scale-[1.01] hover:shadow-xl hover:border-[#3a3a3a]
+        "
         key={note.id}
       >
         <h3
-          className={note.completed ? " line-through text-3xl" : "font-semibold text-3xl"}
+          className={note.completed ? "break-words line-through text-xl text-gray-500 pr-9" : "font-semibold text-xl break-words pr-9"}
         >{note.noteTitle}</h3>
         <p
-          className={note.completed ? " line-through text-3xl" : "font-normal text-lg text-gray-200"}
+          className={note.completed ? "break-words line-through text-lg text-gray-500 pt-6 pr-9" : "font-normal text-lg text-gray-200 pt-6 pr-9 break-words"}
         >{note.noteContent}</p>
-        <p className={note.completed ? " line-through" : "font-light text-md text-gray-500"}
+        <p className={note.completed ? " line-through text-gray-500 pt-6" : "font-light pt-6 text-md text-gray-500"}
         >{note.date}</p>
 
         <div className='absolute top-0.5 right-2 flex gap-2' >
           <button
-            className=' bg-white text-black rounded-lg p-2 mt-1'
+            className='rounded-lg p-2 mt-1 text-black
+
+            bg-blue-600 
+
+            md:bg-black md:text-white md:border md:border-[#2a2a2a] md:shadow-none
+            md:hover:ring-2 md:hover:ring-blue-500/60
+            md:hover:shadow-[0_0_10px_rgba(59,130,246,0.6)]
+
+            transition-all duration-300
+            '
             onClick={
               () => {
                 setEditingId(note.id)
@@ -124,7 +136,16 @@ const DisplayNotes = ({ setNotes, notes, setEditingId, setNoteTitle, setNoteCont
 
         <div className='absolute top-9.5 right-2 flex gap-2'>
           <button
-            className='bg-green-500 text-black rounded-lg p-2 mt-1'
+            className='rounded-lg p-2 mt-1 text-black
+
+            bg-green-600
+
+            md:bg-black md:text-white md:border md:border-[#2a2a2a] md:shadow-none
+            md:hover:ring-2 md:hover:ring-green-500/60
+            md:hover:shadow-[0_0_10px_rgba(34,197,94,0.6)]
+
+            transition-all duration-300
+            '
             onClick={() => {
               const clickedId = note.id;
               setNotes(
@@ -147,9 +168,18 @@ const DisplayNotes = ({ setNotes, notes, setEditingId, setNoteTitle, setNoteCont
           </button>
         </div>
 
-        <div className='absolute top-18.5 right-2 flex gap-2' >
+        <div className='absolute top-18.5 right-2 flex gap-2 ' >
           <button
-            className='bg-red-800 rounded-lg p-2 mt-1 text-black'
+            className='rounded-lg p-2 mt-1 text-black
+
+            bg-red-600 
+
+            md:bg-black md:text-white md:border md:border-[#2a2a2a] md:shadow-none
+            md:hover:ring-2 md:hover:ring-red-500/60
+            md:hover:shadow-[0_0_10px_rgba(239,68,68,0.6)]
+
+            transition-all duration-300
+            '
             onClick={() => {
               const clickedId = note.id;
               setNotes(
@@ -198,7 +228,7 @@ function App() {
 
   return (
     <>
-      <div className="w-full min-h-screen flex items-start bg-black gap-4" >
+      <div className="w-full p-5 min-h-screen flex flex-wrap gap-7 items-start bg-black gap-4" >
         <InputNote
           setNoteTitle={setNoteTitle}
           noteTitle={noteTitle}
